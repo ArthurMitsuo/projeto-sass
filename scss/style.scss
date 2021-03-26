@@ -8,72 +8,46 @@ $img-width: 45%;
 %no-decoration {text-decoration: none;}
 %u-decoration {text-decoration: underline;}
 
-.header {
-    font-family: Arial, Helvetica, sans-serif;
-
-    &__logo{
-        text-align: center;
-    }
-    &__img{
-        max-width: 350px;
-    }
-
-    .menu{
-        &__list {
-            display: flex;
-            justify-content: center;
-            border-top: 1px solid $light-grey;
-            border-bottom: 1px solid $light-grey;
-            margin-left: auto;
-            margin-right: auto;
-            width: 80%;
-            padding: 20px 0;
-        }
-
-        &__links{
-            position: relative;
-            
-            &:not(:last-child)::after{
-                content: "";
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                right: -3px;
-                margin: auto;
-                height: 15px;
-                width: 1px;
-                background-color: $light-grey;
-            }
-        }   
-        &__link{
-            padding: 0 25px;
-            color: $dark-grey;
-            &:hover{
-                color: $purple;
-            }
-        }    
-    }
+@mixin reset-list{
+    margin: 0;
+    padding: 0;
+    list-style:none;
 }
 
-/*Este trecho de estilo se refere ao rodapé do nosso blog*/
-.footer{
-    text-align: center;
-    padding: 20px 0;
-    font-family:Arial, Helvetica, sans-serif;
-    //Este trecho de estilo posiciona o footer na parte de baixo da nossa tela
-    position: relative;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%); 
+@mixin flx($property, $jty-cnt){
+    display: flex;
+    #{$property}: $jty-cnt;
+}
 
-    &__logo{
-        max-width:100px;
-    }
+@mixin for-phone-only{
+    @media (max-width: 767.98px){@content; }
+}
 
-    &__txt {
-        margin: auto;
-        font-size: 14px;
-    }
+@mixin for-tablet-only{
+    @media (min-width: 768px) and (max-width: 1023.99px) {@content; }
+}
+
+@mixin for-desktop-only{
+    @media (min-width: 1024px) {@content; }
+}
+
+@function calculateRem ($size){
+    @return $size / 16px * 1rem;
+}
+
+@mixin fontSize($size){
+    font-size: calculateRem($size);
+}
+@import 'header', 'footer', 'about', 'article';
+
+$directions: top, bottom, left, right;
+$layout-margin-size: 10px;
+
+@each $direction in $directions {
+    %no-margin-#{$direction} {margin-#{$direction}: 0;}
+    %default-margin-#{$direction} {margin-#{$direction}: $layout-margin-size;}
+    %double-margin-#{$direction} {margin-#{$direction}: $layout-margin-size * 2}
+    %half-margin-#{$direction} {margin-#{direction}: $layout-margin-size / 2}
 }
 
 .main {
@@ -83,6 +57,9 @@ $img-width: 45%;
     font-family: Arial, Helvetica, sans-serif;
 
     &__content{
+        @include for-phone-only{
+            width: 100%;
+        }
         width: 70%;
         padding: 40px 8px;
     }
@@ -95,7 +72,7 @@ $img-width: 45%;
 
     &__title {
         text-decoration: none;
-        font-size: 22px;
+        @include fontSize(22px);
         color: $dark-grey;
         letter-spacing: 1.5;
         
@@ -108,12 +85,11 @@ $img-width: 45%;
         display: flex;
         justify-content:center;
         align-items: center;
-        margin-top: 10px;
-        margin-bottom: 20px;
+        @extend %default-margin-top, %double-margin-bottom;
     }
 
     &__date{
-        margin: 0 10px;
+        @extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right;
         font-size:12px;
         font-style: italic;
     }
@@ -123,7 +99,7 @@ $img-width: 45%;
         padding: 5px 7px;
         color: $purple;
         border: 1px solid $purple;
-        margin: 0 10px;
+        @extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right;
     }
 
     &__details{
@@ -193,8 +169,17 @@ $img-width: 45%;
     }
 
     &__sidebar{
-        width: 25%;
-        padding: 40px 10px;
+        @include for-desktop-only{
+            width: 25%;
+            padding: 40px 10px;
+        }
+        @include for-phone-only{
+            width: 100%;
+        }
+        @include for-tablet-only{
+            width: 60%;
+        }
+        
     }
     .sidebar{
         &__top{
@@ -209,9 +194,7 @@ $img-width: 45%;
             letter-spacing: 1.5px;   
         }
         &__posts{
-            margin: 0;
-            padding: 0;
-            list-style: none;
+            @include reset-list;
         }
         &__list{
             display: flex;
@@ -243,77 +226,5 @@ $img-width: 45%;
             font-size: 12px;
             margin: 5px 0 0 0;
         }
-    }
-}
-
-//Referente ao Sobre Nós
-.about{
-    width: 80%;
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0 auto 40px;
-
-    &__title{
-        background-color: $light-grey;
-        text-align: center;
-        padding: 20px;
-    }
-    &__h1{
-        font-size: 22px;
-        color: $dark-grey;
-        letter-spacing: 1px;
-        margin-top: 5px;
-        margin-bottom: 10px;
-        margin-left: 0;
-        margin-right: 0;
-    }
-    &__img{
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    &__intro{
-        font-size: 16px;
-        color: $dark-grey;
-        font-weight: 100;
-        width: 70%;
-        margin: 30px auto;
-        text-align: center;
-    }
-    &__split{
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-    &__img-description{
-        width: $img-width;
-    }
-    &__txt{
-        width: calc(100% - #{$img-width}); 
-    }
-    &__p{
-        font-sice: 14px;
-        padding: 10px 20px;
-        color: $dark-grey;
-    }
-}
-
-.breadcrumb {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &__link{
-        font-size: 12px;
-        text-decoration: none;
-        color: $dark-grey;
-        &:hover{
-            text-decoration: underline;
-            color: $purple;
-        }
-    }
-
-    &__img{
-        width: 10px;
-        margin: 8px;
     }
 }
