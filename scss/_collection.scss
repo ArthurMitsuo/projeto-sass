@@ -1,8 +1,8 @@
 $half-width: 50%;
 $full-width: 100%;
 
-@mixin theme-collection($half-post: true) {
-    @include for-phone-only {
+@mixin theme-collection($half-post: true) { //se o post vai ser dividido pela metade
+    @include for-phone-only { //quando for celular, width em 100%
         width: $full-width;
     }
     @if $half-post {
@@ -42,7 +42,7 @@ $full-width: 100%;
         justify-content: center;
         align-items: center;
         @include theme-collection($half-post: false);
-
+  
         &.half {
             @include theme-collection($half-post: true);
         }

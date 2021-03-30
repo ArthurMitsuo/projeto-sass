@@ -31,14 +31,15 @@ $img-width: 45%;
     @media (min-width: 1024px) {@content; }
 }
 
-@function calculateRem ($size){
+@function calculateRem($size){
     @return $size / 16px * 1rem;
 }
 
 @mixin fontSize($size){
     font-size: calculateRem($size);
 }
-@import 'header', 'footer', 'about', 'article';
+//importando os arquivos _[arquivo].scss no style
+@import 'header', 'footer', 'about', 'article', 'collection', 'contact';
 
 $directions: top, bottom, left, right;
 $layout-margin-size: 10px;
@@ -99,7 +100,7 @@ $layout-margin-size: 10px;
         padding: 5px 7px;
         color: $purple;
         border: 1px solid $purple;
-        @extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right;
+        @extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right; 
     }
 
     &__details{
